@@ -1,6 +1,0 @@
-name = "sectortv-proxy"
-main = "src/index.js"
-compatibility_date = "2026-06-01"
-
-# Optional: enable a workers.dev subdomain (https://sectortv-proxy.<you>.workers.dev)
-workers_dev = true
