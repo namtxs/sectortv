@@ -35,23 +35,23 @@ Live sports streaming platform built with **SvelteKit**, **ArtPlayer**, and **hl
 ```mermaid
 flowchart LR
   subgraph scrape [Auto pipeline]
-    A[xyzstreams.st page] --> B[parseStreams]
+    A[xyzstreams page] --> B[parseStreams]
     B --> C{classify}
-    C -->|Server 2 direct URL| D[probe + liveCheck]
-    C -->|Server 1 streamId| E[embedresolve]
+    C -->|Server 2| D[probe and liveCheck]
+    C -->|Server 1| E[embedresolve]
     E --> F[vinix signed m3u8]
-    D --> G[/live/name.m3u8]
+    D --> G[live proxy route]
     F --> G
   end
   subgraph play [Playback]
     G --> H[hlsproxy]
-    H --> I[ArtPlayer + hls.js]
+    H --> I[ArtPlayer and hls.js]
   end
   subgraph store [Persistence]
-    J[(Vercel KV)] --- K[config + resolveMap + stats]
+    J[(Vercel KV)] --- K[config and stats]
   end
-  scrape --> store
-  play --> store
+  G -.-> J
+  H -.-> J
 ```
 
 ### Server 1 vs Server 2
