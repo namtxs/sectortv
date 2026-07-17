@@ -1,6 +1,6 @@
 # SectorTV
 
-Live sports streaming platform built with **SvelteKit**, **ArtPlayer**, and **hls.js**. Auto-scrapes channel lists from [xyzstreams.st](https://xyzstreams.st), resolves protected HLS sources server-side, and serves them through a clean player UI with admin controls, ads, and FIFA World Cup schedule.
+Live sports streaming platform built with **SvelteKit**, **ArtPlayer**, and **hls.js**. Discovers live channels from configured event sources, resolves protected HLS URLs server-side, and serves them through a clean player UI with admin controls, ads, and FIFA World Cup schedule.
 
 **Production:** [tv.sector.web.id](https://tv.sector.web.id)
 
@@ -35,7 +35,7 @@ Live sports streaming platform built with **SvelteKit**, **ArtPlayer**, and **hl
 ```mermaid
 flowchart LR
   subgraph scrape [Auto pipeline]
-    A[xyzstreams page] --> B[parseStreams]
+    A[event source page] --> B[parseStreams]
     B --> C{classify}
     C -->|Server 2| D[probe and liveCheck]
     C -->|Server 1| E[embedresolve]
@@ -61,7 +61,7 @@ flowchart LR
 | Source format | `{ type: "embed", streamId: "fox-usa" }` | `{ type: "hls", file: "https://…" }` |
 | Resolution | Fetch embed page → deobfuscate JS → signed vinix URL | Direct probe / live check |
 | Playback URL | `/live/fox-usa.m3u8` (proxied) | `/live/stream-N.m3u8` (proxied) |
-| Referer | `player.xyzstreams.st` | xyzstreams origin |
+| Referer | Embed player origin | Event page origin |
 
 Proxied URLs hide upstream tokens and enforce a **whitelist** — only streams discovered during scrape are resolvable (not an open proxy).
 
@@ -170,7 +170,7 @@ src/
 │   │   ├── hlsproxy.js       # Manifest/segment proxy
 │   │   ├── store.js          # Config persistence
 │   │   └── kv.js             # Redis client
-│   ├── parse.js              # xyzstreams HTML parser
+│   ├── parse.js              # Event page HTML parser
 │   ├── fifa.js               # Schedule helpers
 │   └── components/           # Schedule, Flag
 static/                       # Favicon, watermark, PWA manifest
@@ -182,7 +182,7 @@ static/                       # Favicon, watermark, PWA manifest
 
 | Mode | Behavior |
 |---|---|
-| `auto` | Channels from configured xyzstreams slug only |
+| `auto` | Channels from configured source slug only |
 | `manual` | Admin-added URLs only |
 | `both` | Manual channels + auto channels merged |
 
