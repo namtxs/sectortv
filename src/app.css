@@ -1,0 +1,140 @@
+:root {
+  --bg: #08090c;
+  --bg-elev: #111319;
+  --bg-elev-2: #181b22;
+  --bg-hover: #1e222b;
+  --line: #23262f;
+  --line-soft: #1a1d24;
+  --text: #f4f5f7;
+  --text-dim: #98a0ad;
+  --text-faint: #646b78;
+  --brand: #2dd36f;
+  --brand-2: #4ade80;
+  --brand-dim: #16a34a;
+  --live: #ff3b55;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --maxw: 100%;
+  --gutter: 28px;
+  --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f5f7fa;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #eef1f5;
+  --bg-hover: #eceff4;
+  --line: #e1e5ec;
+  --line-soft: #eef0f4;
+  --text: #0f1419;
+  --text-dim: #545d6b;
+  --text-faint: #8a93a1;
+  --brand: #16a34a;
+  --brand-2: #128a3e;
+  --brand-dim: #0f7a37;
+  --live: #e11d48;
+  --shadow: 0 16px 38px -22px rgba(15, 30, 60, 0.28);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* clip (not hidden) so a stray full-bleed element can't cause horizontal
+     scroll, while keeping position: sticky working on the header/nav. */
+  overflow-x: clip;
+}
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(900px 500px at 50% -10%, rgba(45, 211, 111, 0.08), transparent 70%),
+    radial-gradient(700px 400px at 100% 0%, rgba(45, 211, 111, 0.04), transparent 60%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-elev-2);
+  border-radius: 8px;
+}
+
+/* ---- Artplayer tweaks ---- */
+/* Live streams: no seek/progress bar. */
+.art-video-player .art-bottom .art-progress {
+  display: none !important;
+}
+/* Custom LIVE indicator placed in the control bar. */
+.art-video-player .art-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #fff;
+  user-select: none;
+}
+.art-video-player .art-live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  box-shadow: 0 0 6px var(--live);
+  animation: artblink 1.4s infinite;
+}
+@keyframes artblink {
+  50% {
+    opacity: 0.25;
+  }
+}
+/* Channel watermark (centered, like a TV logo). Scales with the player's own
+   width via container query units, so it stays proportional on phones,
+   desktop, and fullscreen alike. `height: 64px` is a fallback for browsers
+   without container query unit support. */
+.art-video-player {
+  container-type: inline-size;
+}
+.art-video-player .wm-logo {
+  height: 64px;
+  height: clamp(26px, 8cqw, 84px);
+  width: auto;
+  display: block;
+  opacity: 0.55;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.6));
+  user-select: none;
+}

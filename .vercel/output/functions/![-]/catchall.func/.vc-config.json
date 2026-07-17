@@ -1,0 +1,10 @@
+{
+	"runtime": "nodejs24.x",
+	"handler": "..\\..\\..\\..\\2027\\Github\\sectortv\\.svelte-kit\\vercel-tmp\\index.js",
+	"launcherType": "Nodejs",
+	"experimentalResponseStreaming": true,
+	"framework": {
+		"slug": "sveltekit",
+		"version": "2.68.0"
+	}
+}
